@@ -66,7 +66,7 @@ public class ClubControllerIntegrationTest {
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/clubs")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Test Club\"}"))
+                .content("{\"name\":\"Test Club\", \"Status\":\"ACTIVE\", \"Category\":\"TECHNOLOGY\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Test Club"));
     }
@@ -80,7 +80,7 @@ public class ClubControllerIntegrationTest {
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/clubs/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Updated Club\"}"))
+                .content("{\"name\":\"Updated Club\", \"Status\":\"ACTIVE\", \"Category\":\"TECHNOLOGY\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Updated Club"));
     }
