@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.clubservice.entity.ClubRegistration;
+import tn.esprit.clubservice.dto.ClubRegistrationDTO;
 import tn.esprit.clubservice.service.ClubRegistrationService;
 
 import java.util.List;
@@ -21,26 +21,26 @@ public class ClubRegistrationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClubRegistration>> getAll() {
+    public ResponseEntity<List<ClubRegistrationDTO>> getAll() {
         return ResponseEntity.ok(registrationService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClubRegistration> getById(@PathVariable Long id) {
+    public ResponseEntity<ClubRegistrationDTO> getById(@PathVariable Long id) {
         return registrationService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<ClubRegistration> create(@Valid @RequestBody ClubRegistration registration) {
-        ClubRegistration created = registrationService.create(registration);
+    public ResponseEntity<ClubRegistrationDTO> create(@Valid @RequestBody ClubRegistrationDTO registrationDTO) {
+        ClubRegistrationDTO created = registrationService.create(registrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClubRegistration> update(@PathVariable Long id, @Valid @RequestBody ClubRegistration registration) {
-        ClubRegistration updated = registrationService.update(id, registration);
+    public ResponseEntity<ClubRegistrationDTO> update(@PathVariable Long id, @Valid @RequestBody ClubRegistrationDTO registrationDTO) {
+        ClubRegistrationDTO updated = registrationService.update(id, registrationDTO);
         return ResponseEntity.ok(updated);
     }
 
@@ -51,12 +51,12 @@ public class ClubRegistrationController {
     }
 
     @GetMapping("/club/{clubId}")
-    public ResponseEntity<List<ClubRegistration>> getByClubId(@PathVariable Long clubId) {
+    public ResponseEntity<List<ClubRegistrationDTO>> getByClubId(@PathVariable Long clubId) {
         return ResponseEntity.ok(registrationService.findByClubId(clubId));
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ClubRegistration>> getByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<ClubRegistrationDTO>> getByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(registrationService.findByUserId(userId));
     }
 }

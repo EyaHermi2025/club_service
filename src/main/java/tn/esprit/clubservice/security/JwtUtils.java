@@ -11,8 +11,8 @@ import java.util.function.Function;
 @Component
 public class JwtUtils {
 
-    private final String SECRET_KEY = "mySecretKeyForSchoolPlatformMicroservicesProject2026";
-    private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private static final String SECRET_KEY = "mySecretKeyForSchoolPlatformMicroservicesProject2026";
+    private static final SecretKey SIGNING_KEY = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -24,12 +24,12 @@ public class JwtUtils {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(SIGNING_KEY).build().parseClaimsJws(token).getBody();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(SIGNING_KEY).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;

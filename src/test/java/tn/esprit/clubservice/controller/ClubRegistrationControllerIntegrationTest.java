@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import tn.esprit.clubservice.entity.ClubRegistration;
+import tn.esprit.clubservice.dto.ClubRegistrationDTO;
 import tn.esprit.clubservice.service.ClubRegistrationService;
 
 @SpringBootTest
@@ -29,7 +29,7 @@ class ClubRegistrationControllerIntegrationTest {
 
     @Test
     void testGetAll() throws Exception {
-        ClubRegistration reg = new ClubRegistration();
+        ClubRegistrationDTO reg = new ClubRegistrationDTO();
         reg.setId(1L);
         reg.setFullName("Test User");
 
@@ -37,12 +37,12 @@ class ClubRegistrationControllerIntegrationTest {
 
         mockMvc.perform(get("/api/club-registrations"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].FullName").value("Test User"));
+                .andExpect(jsonPath("$[0].fullName").value("Test User"));
     }
 
     @Test
     void testGetById() throws Exception {
-        ClubRegistration reg = new ClubRegistration();
+        ClubRegistrationDTO reg = new ClubRegistrationDTO();
         reg.setId(1L);
         reg.setFullName("Specific User");
 
@@ -50,7 +50,7 @@ class ClubRegistrationControllerIntegrationTest {
 
         mockMvc.perform(get("/api/club-registrations/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.FullName").value("Specific User"));
+                .andExpect(jsonPath("$.fullName").value("Specific User"));
     }
 
     @Test

@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.clubservice.entity.Club;
+import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.service.ClubService;
 
 import java.util.List;
@@ -21,26 +22,26 @@ public class ClubController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Club>> getAllClubs() {
+    public ResponseEntity<List<ClubDTO>> getAllClubs() {
         return ResponseEntity.ok(clubService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Club> getClubById(@PathVariable("id") Long id) {
+    public ResponseEntity<ClubDTO> getClubById(@PathVariable("id") Long id) {
         return clubService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Club> createClub(@Valid @RequestBody Club club) {
-        Club created = clubService.create(club);
+    public ResponseEntity<ClubDTO> createClub(@Valid @RequestBody ClubDTO clubDTO) {
+        ClubDTO created = clubService.create(clubDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Club> updateClub(@PathVariable("id") Long id, @Valid @RequestBody Club club) {
-        Club updated = clubService.update(id, club);
+    public ResponseEntity<ClubDTO> updateClub(@PathVariable("id") Long id, @Valid @RequestBody ClubDTO clubDTO) {
+        ClubDTO updated = clubService.update(id, clubDTO);
         return ResponseEntity.ok(updated);
     }
 
@@ -51,17 +52,17 @@ public class ClubController {
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Club>> getClubsByStatus(@PathVariable("status") Club.ClubStatus status) {
+    public ResponseEntity<List<ClubDTO>> getClubsByStatus(@PathVariable("status") Club.ClubStatus status) {
         return ResponseEntity.ok(clubService.findByStatus(status));
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Club>> getClubsByCategory(@PathVariable("category") Club.ClubCategory category) {
+    public ResponseEntity<List<ClubDTO>> getClubsByCategory(@PathVariable("category") Club.ClubCategory category) {
         return ResponseEntity.ok(clubService.findByCategory(category));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Club>> searchByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<ClubDTO>> searchByName(@RequestParam("name") String name) {
         return ResponseEntity.ok(clubService.searchByName(name));
     }
 

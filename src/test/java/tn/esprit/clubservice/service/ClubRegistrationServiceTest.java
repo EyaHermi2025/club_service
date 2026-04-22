@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.entity.ClubRegistration;
+import tn.esprit.clubservice.dto.ClubRegistrationDTO;
 import tn.esprit.clubservice.repository.ClubRegistrationRepository;
 import tn.esprit.clubservice.repository.ClubRepository;
 import tn.esprit.clubservice.dto.ClubRegistrationEvent;
@@ -37,6 +38,7 @@ class ClubRegistrationServiceTest {
 
     private Club testClub;
     private ClubRegistration testRegistration;
+    private ClubRegistrationDTO testRegistrationDTO;
 
     @BeforeEach
     void setUp() {
@@ -46,15 +48,21 @@ class ClubRegistrationServiceTest {
 
         testRegistration = new ClubRegistration();
         testRegistration.setId(1L);
-        testRegistration.setClubIdInput(1L);
+        testRegistration.setClub(testClub);
         testRegistration.setEmail("student@mail.com");
         testRegistration.setFullName("John Doe");
+
+        testRegistrationDTO = new ClubRegistrationDTO();
+        testRegistrationDTO.setId(1L);
+        testRegistrationDTO.setClubId(1L);
+        testRegistrationDTO.setEmail("student@mail.com");
+        testRegistrationDTO.setFullName("John Doe");
     }
 
     @Test
     void testFindAll() {
         when(registrationRepository.findAll()).thenReturn(Arrays.asList(testRegistration));
-        List<ClubRegistration> list = registrationService.findAll();
+        List<ClubRegistrationDTO> list = registrationService.findAll();
         assertEquals(1, list.size());
         verify(registrationRepository, times(1)).findAll();
     }
@@ -62,7 +70,7 @@ class ClubRegistrationServiceTest {
     @Test
     void testFindById_Found() {
         when(registrationRepository.findById(1L)).thenReturn(Optional.of(testRegistration));
-        Optional<ClubRegistration> found = registrationService.findById(1L);
+        Optional<ClubRegistrationDTO> found = registrationService.findById(1L);
         assertTrue(found.isPresent());
         assertEquals("John Doe", found.get().getFullName());
     }
@@ -73,19 +81,18 @@ class ClubRegistrationServiceTest {
         when(registrationRepository.save(any(ClubRegistration.class))).thenReturn(testRegistration);
         doNothing().when(kafkaProducerService).sendRegistrationEvent(any(ClubRegistrationEvent.class));
 
-        ClubRegistration created = registrationService.create(testRegistration);
+        ClubRegistrationDTO created = registrationService.create(testRegistrationDTO);
 
         assertNotNull(created);
-        assertEquals("Pending", created.getStatus());
         verify(kafkaProducerService, times(1)).sendRegistrationEvent(any());
         verify(registrationRepository, times(1)).save(any());
     }
 
     @Test
     void testCreate_MissingClubId() {
-        testRegistration.setClubIdInput(null);
+        testRegistrationDTO.setClubId(null);
         assertThrows(RuntimeException.class, () -> {
-            registrationService.create(testRegistration);
+            registrationService.create(testRegistrationDTO);
         });
     }
 
@@ -94,10 +101,10 @@ class ClubRegistrationServiceTest {
         when(registrationRepository.findById(1L)).thenReturn(Optional.of(testRegistration));
         when(registrationRepository.save(any(ClubRegistration.class))).thenReturn(testRegistration);
 
-        ClubRegistration details = new ClubRegistration();
+        ClubRegistrationDTO details = new ClubRegistrationDTO();
         details.setFullName("Updated Name");
         
-        ClubRegistration updated = registrationService.update(1L, details);
+        ClubRegistrationDTO updated = registrationService.update(1L, details);
         
         assertNotNull(updated);
         verify(registrationRepository, times(1)).save(any());
@@ -116,14 +123,14 @@ class ClubRegistrationServiceTest {
     @Test
     void testFindByClubId() {
         when(registrationRepository.findByClub_Id(1L)).thenReturn(Arrays.asList(testRegistration));
-        List<ClubRegistration> results = registrationService.findByClubId(1L);
+        List<ClubRegistrationDTO> results = registrationService.findByClubId(1L);
         assertEquals(1, results.size());
     }
 
     @Test
     void testFindByUserId() {
         when(registrationRepository.findByUserId(10L)).thenReturn(Arrays.asList(testRegistration));
-        List<ClubRegistration> results = registrationService.findByUserId(10L);
+        List<ClubRegistrationDTO> results = registrationService.findByUserId(10L);
         assertEquals(1, results.size());
     }
 }

@@ -13,7 +13,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import tn.esprit.clubservice.entity.Club;
+import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.repository.ClubRepository;
+
+import java.util.Optional;
+import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 class ClubServiceTest {
@@ -25,6 +29,7 @@ class ClubServiceTest {
     private ClubService clubService;
 
     private Club testClub;
+    private ClubDTO testClubDTO;
 
     @BeforeEach
     void setUp() {
@@ -32,13 +37,18 @@ class ClubServiceTest {
         testClub.setId(1L);
         testClub.setName("Google Developer Student Club");
         testClub.setBudget(1000.0);
+
+        testClubDTO = new ClubDTO();
+        testClubDTO.setId(1L);
+        testClubDTO.setName("Google Developer Student Club");
+        testClubDTO.setBudget(1000.0);
     }
 
     @Test
     void testFindById_Found() {
         when(clubRepository.findById(1L)).thenReturn(Optional.of(testClub));
 
-        Optional<Club> found = clubService.findById(1L);
+        Optional<ClubDTO> found = clubService.findById(1L);
 
         assertTrue(found.isPresent());
         assertEquals("Google Developer Student Club", found.get().getName());
@@ -67,7 +77,7 @@ class ClubServiceTest {
     @Test
     void testFindAll() {
         when(clubRepository.findAll()).thenReturn(java.util.Arrays.asList(testClub));
-        java.util.List<Club> all = clubService.findAll();
+        List<ClubDTO> all = clubService.findAll();
         assertEquals(1, all.size());
         verify(clubRepository, times(1)).findAll();
     }
@@ -75,9 +85,9 @@ class ClubServiceTest {
     @Test
     void testCreate() {
         when(clubRepository.save(any(Club.class))).thenReturn(testClub);
-        Club created = clubService.create(testClub);
+        ClubDTO created = clubService.create(testClubDTO);
         assertEquals("Google Developer Student Club", created.getName());
-        verify(clubRepository, times(1)).save(testClub);
+        verify(clubRepository, times(1)).save(any(Club.class));
     }
 
     @Test
@@ -85,11 +95,11 @@ class ClubServiceTest {
         when(clubRepository.findById(1L)).thenReturn(Optional.of(testClub));
         when(clubRepository.save(any(Club.class))).thenReturn(testClub);
         
-        testClub.setName("Updated Club");
-        Club updated = clubService.update(1L, testClub);
+        testClubDTO.setName("Updated Club");
+        ClubDTO updated = clubService.update(1L, testClubDTO);
         
         assertEquals("Updated Club", updated.getName());
-        verify(clubRepository, times(1)).save(testClub);
+        verify(clubRepository, times(1)).save(any(Club.class));
     }
 
     @Test
@@ -103,21 +113,21 @@ class ClubServiceTest {
     @Test
     void testFindByStatus() {
         when(clubRepository.findByStatus(any())).thenReturn(java.util.Arrays.asList(testClub));
-        java.util.List<Club> clubs = clubService.findByStatus(Club.ClubStatus.ACTIVE);
+        List<ClubDTO> clubs = clubService.findByStatus(Club.ClubStatus.ACTIVE);
         assertEquals(1, clubs.size());
     }
 
     @Test
     void testFindByCategory() {
         when(clubRepository.findByCategory(any())).thenReturn(java.util.Arrays.asList(testClub));
-        java.util.List<Club> clubs = clubService.findByCategory(Club.ClubCategory.TECHNOLOGY);
+        List<ClubDTO> clubs = clubService.findByCategory(Club.ClubCategory.TECHNOLOGY);
         assertEquals(1, clubs.size());
     }
 
     @Test
     void testSearchByName() {
         when(clubRepository.findByNameContainingIgnoreCase("Google")).thenReturn(java.util.Arrays.asList(testClub));
-        java.util.List<Club> clubs = clubService.searchByName("Google");
+        List<ClubDTO> clubs = clubService.searchByName("Google");
         assertEquals(1, clubs.size());
     }
 }

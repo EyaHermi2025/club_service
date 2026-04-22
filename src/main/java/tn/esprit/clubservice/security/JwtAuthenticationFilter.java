@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,12 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 filterLogger.debug("Extracted Role Claim: {}", roleClaim);
 
                 if (roleClaim != null) {
-                    if (roleClaim instanceof String) {
-                        String r = (String) roleClaim;
+                    if (roleClaim instanceof String r) {
                         if (!r.startsWith("ROLE_")) r = "ROLE_" + r.toUpperCase();
                         authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(r));
-                    } else if (roleClaim instanceof java.util.Collection) {
-                        ((java.util.Collection<?>) roleClaim).forEach(r -> {
+                    } else if (roleClaim instanceof java.util.Collection<?> roles) {
+                        roles.forEach(r -> {
                             String roleStr = r.toString();
                             if (!roleStr.startsWith("ROLE_")) roleStr = "ROLE_" + roleStr.toUpperCase();
                             authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(roleStr));

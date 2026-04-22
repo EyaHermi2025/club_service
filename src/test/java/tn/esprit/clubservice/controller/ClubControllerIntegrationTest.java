@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import tn.esprit.clubservice.entity.Club;
+import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.service.ClubService;
 
 @SpringBootTest
@@ -30,39 +31,37 @@ class ClubControllerIntegrationTest {
 
     @Test
     void testGetAllClubs() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setId(1L);
         club.setName("Test Club");
 
         when(clubService.findAll()).thenReturn(Arrays.asList(club));
 
-        mockMvc.perform(get("/api/clubs")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/clubs"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Test Club"));
     }
 
     @Test
     void testGetClubById() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setId(1L);
         club.setName("Specific Club");
 
         when(clubService.findById(1L)).thenReturn(java.util.Optional.of(club));
 
-        mockMvc.perform(get("/api/clubs/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/clubs/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Specific Club"));
     }
 
     @Test
     void testCreateClub() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setId(1L);
         club.setName("Test Club");
 
-        when(clubService.create(org.mockito.ArgumentMatchers.any(Club.class))).thenReturn(club);
+        when(clubService.create(org.mockito.ArgumentMatchers.any(ClubDTO.class))).thenReturn(club);
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/clubs")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,10 +72,10 @@ class ClubControllerIntegrationTest {
 
     @Test
     void testUpdateClub() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setName("Updated Club");
 
-        when(clubService.update(org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.any(Club.class))).thenReturn(club);
+        when(clubService.update(org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.any(ClubDTO.class))).thenReturn(club);
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put("/api/clubs/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -87,39 +86,36 @@ class ClubControllerIntegrationTest {
 
     @Test
     void testGetClubsByStatus() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setName("Active Club");
 
         when(clubService.findByStatus(org.mockito.ArgumentMatchers.any())).thenReturn(Arrays.asList(club));
 
-        mockMvc.perform(get("/api/clubs/status/ACTIVE")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/clubs/status/ACTIVE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Active Club"));
     }
 
     @Test
     void testGetClubsByCategory() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setName("Tech Club");
 
         when(clubService.findByCategory(org.mockito.ArgumentMatchers.any())).thenReturn(Arrays.asList(club));
 
-        mockMvc.perform(get("/api/clubs/category/TECHNOLOGY")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/clubs/category/TECHNOLOGY"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Tech Club"));
     }
 
     @Test
     void testSearchByName() throws Exception {
-        Club club = new Club();
+        ClubDTO club = new ClubDTO();
         club.setName("Search Club");
 
         when(clubService.searchByName(org.mockito.ArgumentMatchers.anyString())).thenReturn(Arrays.asList(club));
 
-        mockMvc.perform(get("/api/clubs/search?name=Search")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/clubs/search?name=Search"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Search Club"));
     }
