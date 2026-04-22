@@ -94,6 +94,7 @@ public class ClubServiceTest {
 
     @Test
     void testDeleteById() {
+        when(clubRepository.existsById(1L)).thenReturn(true);
         doNothing().when(clubRepository).deleteById(1L);
         clubService.deleteById(1L);
         verify(clubRepository, times(1)).deleteById(1L);
