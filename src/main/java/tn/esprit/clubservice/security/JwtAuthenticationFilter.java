@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger filterLogger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    private static final String ROLE_PREFIX = "ROLE_";
 
     private final JwtUtils jwtUtils;
 
@@ -28,7 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-
         final String authHeader = request.getHeader("Authorization");
         final String jwt;
         final String userEmail;
@@ -59,12 +59,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (roleClaim != null) {
                     if (roleClaim instanceof String r) {
-                        if (!r.startsWith("ROLE_")) r = "ROLE_" + r.toUpperCase();
+                        if (!r.startsWith(ROLE_PREFIX)) r = ROLE_PREFIX + r.toUpperCase();
                         authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(r));
                     } else if (roleClaim instanceof java.util.Collection<?> roles) {
                         roles.forEach(r -> {
                             String roleStr = r.toString();
-                            if (!roleStr.startsWith("ROLE_")) roleStr = "ROLE_" + roleStr.toUpperCase();
+                            if (!roleStr.startsWith(ROLE_PREFIX)) roleStr = ROLE_PREFIX + roleStr.toUpperCase();
                             authorities.add(new org.springframework.security.core.authority.SimpleGrantedAuthority(roleStr));
                         });
                     }

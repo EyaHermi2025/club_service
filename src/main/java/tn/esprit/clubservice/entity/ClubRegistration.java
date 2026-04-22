@@ -87,21 +87,7 @@ public class ClubRegistration {
     private Long clubIdInput;
 
     public ClubRegistration() {
-    }
-
-    public ClubRegistration(Long id, LocalDateTime dateInscription, String fullName, String email, String phoneNumber, String studentId, String yearOfStudy, String motivation, String skills, Boolean termsAccepted, Long userId, Club club) {
-        this.id = id;
-        this.dateInscription = dateInscription;
-        this.fullName = fullName;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.studentId = studentId;
-        this.yearOfStudy = yearOfStudy;
-        this.motivation = motivation;
-        this.skills = skills;
-        this.termsAccepted = termsAccepted;
-        this.userId = userId;
-        this.club = club;
+        // Default constructor required by JPA
     }
 
     /**
@@ -192,8 +178,20 @@ public class ClubRegistration {
         public ClubRegistrationBuilder club(Club club) { this.club = club; return this; }
 
         public ClubRegistration build() {
-            ClubRegistration registration = new ClubRegistration(id, dateInscription, fullName, email, phoneNumber, studentId, yearOfStudy, motivation, skills, termsAccepted, userId, club);
+            ClubRegistration registration = new ClubRegistration();
+            registration.setId(id);
+            registration.setDateInscription(dateInscription);
+            registration.setFullName(fullName);
+            registration.setEmail(email);
+            registration.setPhoneNumber(phoneNumber);
+            registration.setStudentId(studentId);
+            registration.setYearOfStudy(yearOfStudy);
+            registration.setMotivation(motivation);
+            registration.setSkills(skills);
+            registration.setTermsAccepted(termsAccepted);
+            registration.setUserId(userId);
             registration.setStatus(status);
+            registration.setClub(club);
             return registration;
         }
     }

@@ -66,17 +66,7 @@ public class Club {
     private List<ClubRegistration> registrations = new ArrayList<>();
 
     public Club() {
-    }
-
-    public Club(Long id, String name, ClubStatus status, LocalDateTime creationDate, String emailContact, ClubCategory category, Double budget, List<ClubRegistration> registrations) {
-        this.id = id;
-        this.name = name;
-        this.status = status;
-        this.creationDate = creationDate;
-        this.emailContact = emailContact;
-        this.category = category;
-        this.budget = budget;
-        this.registrations = registrations;
+        // Default constructor required by JPA
     }
 
     @PrePersist

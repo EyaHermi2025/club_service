@@ -17,7 +17,9 @@ public class ClubRegistrationDTO {
     private String status;
     private Long clubId;
 
-    public ClubRegistrationDTO() {}
+    public ClubRegistrationDTO() {
+        // Default constructor required for JSON serialization
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

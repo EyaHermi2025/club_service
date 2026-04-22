@@ -13,17 +13,19 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String MESSAGE_KEY = "message";
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResourceNotFound(ResourceNotFoundException ex) {
         Map<String, String> body = new HashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE_KEY, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
     @ExceptionHandler(InsufficientBudgetException.class)
     public ResponseEntity<Map<String, String>> handleInsufficientBudget(InsufficientBudgetException ex) {
         Map<String, String> body = new HashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE_KEY, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
@@ -42,7 +44,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleRuntime(RuntimeException ex) {
         ex.printStackTrace();
         Map<String, String> body = new HashMap<>();
-        body.put("message", ex.getMessage());
+        body.put(MESSAGE_KEY, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 }

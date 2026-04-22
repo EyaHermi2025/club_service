@@ -27,7 +27,9 @@ public class ClubDTO {
     @JsonProperty("budget")
     private Double budget;
 
-    public ClubDTO() {}
+    public ClubDTO() {
+        // Default constructor required for JSON serialization
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
