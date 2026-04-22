@@ -13,7 +13,6 @@ import tn.esprit.clubservice.repository.ClubRepository;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClubRegistrationService {
@@ -67,7 +66,7 @@ public class ClubRegistrationService {
 
     @Transactional(readOnly = true)
     public List<ClubRegistrationDTO> findAll() {
-        return registrationRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
+        return registrationRepository.findAll().stream().map(this::toDTO).toList();
     }
 
     @Transactional(readOnly = true)
@@ -134,11 +133,11 @@ public class ClubRegistrationService {
 
     @Transactional(readOnly = true)
     public List<ClubRegistrationDTO> findByClubId(Long clubId) {
-        return registrationRepository.findByClub_Id(clubId).stream().map(this::toDTO).collect(Collectors.toList());
+        return registrationRepository.findByClub_Id(clubId).stream().map(this::toDTO).toList();
     }
 
     @Transactional(readOnly = true)
     public List<ClubRegistrationDTO> findByUserId(Long userId) {
-        return registrationRepository.findByUserId(userId).stream().map(this::toDTO).collect(Collectors.toList());
+        return registrationRepository.findByUserId(userId).stream().map(this::toDTO).toList();
     }
 }

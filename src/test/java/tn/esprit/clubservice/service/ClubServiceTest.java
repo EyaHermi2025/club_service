@@ -16,7 +16,6 @@ import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.repository.ClubRepository;
 
-import java.util.Optional;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
