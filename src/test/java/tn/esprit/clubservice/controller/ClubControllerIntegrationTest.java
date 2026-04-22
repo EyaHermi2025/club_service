@@ -41,4 +41,26 @@ public class ClubControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Test Club"));
     }
+
+    @Test
+    public void testGetClubById() throws Exception {
+        Club club = new Club();
+        club.setId(1L);
+        club.setName("Specific Club");
+
+        when(clubService.findById(1L)).thenReturn(java.util.Optional.of(club));
+
+        mockMvc.perform(get("/api/clubs/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value("Specific Club"));
+    }
+
+    @Test
+    public void testDeleteClub() throws Exception {
+        org.mockito.Mockito.doNothing().when(clubService).deleteById(1L);
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/clubs/1"))
+                .andExpect(status().isNoContent());
+    }
 }

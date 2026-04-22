@@ -63,4 +63,60 @@ public class ClubServiceTest {
             clubService.deductBudget(1L, 1200.0);
         });
     }
+
+    @Test
+    void testFindAll() {
+        when(clubRepository.findAll()).thenReturn(java.util.Arrays.asList(testClub));
+        java.util.List<Club> all = clubService.findAll();
+        assertEquals(1, all.size());
+        verify(clubRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testCreate() {
+        when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+        Club created = clubService.create(testClub);
+        assertEquals("Google Developer Student Club", created.getName());
+        verify(clubRepository, times(1)).save(testClub);
+    }
+
+    @Test
+    void testUpdate() {
+        when(clubRepository.findById(1L)).thenReturn(Optional.of(testClub));
+        when(clubRepository.save(any(Club.class))).thenReturn(testClub);
+        
+        testClub.setName("Updated Club");
+        Club updated = clubService.update(1L, testClub);
+        
+        assertEquals("Updated Club", updated.getName());
+        verify(clubRepository, times(1)).save(testClub);
+    }
+
+    @Test
+    void testDeleteById() {
+        doNothing().when(clubRepository).deleteById(1L);
+        clubService.deleteById(1L);
+        verify(clubRepository, times(1)).deleteById(1L);
+    }
+
+    @Test
+    void testFindByStatus() {
+        when(clubRepository.findByStatus(any())).thenReturn(java.util.Arrays.asList(testClub));
+        java.util.List<Club> clubs = clubService.findByStatus(Club.ClubStatus.ACTIVE);
+        assertEquals(1, clubs.size());
+    }
+
+    @Test
+    void testFindByCategory() {
+        when(clubRepository.findByCategory(any())).thenReturn(java.util.Arrays.asList(testClub));
+        java.util.List<Club> clubs = clubService.findByCategory(Club.ClubCategory.TECHNOLOGY);
+        assertEquals(1, clubs.size());
+    }
+
+    @Test
+    void testSearchByName() {
+        when(clubRepository.findByNameContainingIgnoreCase("Google")).thenReturn(java.util.Arrays.asList(testClub));
+        java.util.List<Club> clubs = clubService.searchByName("Google");
+        assertEquals(1, clubs.size());
+    }
 }

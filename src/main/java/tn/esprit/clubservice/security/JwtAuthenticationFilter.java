@@ -12,9 +12,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final JwtUtils jwtUtils;
 
@@ -50,9 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     return null;
                 });
 
-                System.out.println("=== CLUB SECURITY DEBUG ===");
-                System.out.println("User: " + userEmail);
-                System.out.println("Extracted Role Claim: " + roleClaim);
+                logger.debug("=== CLUB SECURITY DEBUG ===");
+                logger.debug("User: {}", userEmail);
+                logger.debug("Extracted Role Claim: {}", roleClaim);
 
                 if (roleClaim != null) {
                     if (roleClaim instanceof String) {
@@ -68,8 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 
-                System.out.println("Final Authorities: " + authorities);
-                System.out.println("======================");
+                logger.debug("Final Authorities: {}", authorities);
+                logger.debug("======================");
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userEmail, null, authorities);

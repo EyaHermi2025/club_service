@@ -12,12 +12,16 @@ import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.entity.Club.ClubStatus;
 import tn.esprit.clubservice.entity.Club.ClubCategory;
 import java.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SpringBootApplication
 @org.springframework.cloud.openfeign.EnableFeignClients
 @org.springframework.cloud.client.discovery.EnableDiscoveryClient
 @EnableScheduling
 public class ClubServiceApplication {
+
+    private static final Logger logger = LoggerFactory.getLogger(ClubServiceApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(ClubServiceApplication.class, args);
@@ -58,7 +62,7 @@ public class ClubServiceApplication {
                 clubRepository.save(club2);
                 clubRepository.save(club3);
 
-                System.out.println("✅ Mock clubs inserted into database successfully!");
+                logger.info("✅ Mock clubs inserted into database successfully!");
             }
         };
     }
