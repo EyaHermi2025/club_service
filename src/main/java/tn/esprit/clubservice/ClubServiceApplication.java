@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-<<<<<<< HEAD
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 import tn.esprit.clubservice.repository.ClubRepository;
@@ -17,9 +16,6 @@ import java.time.LocalDateTime;
 @SpringBootApplication
 @org.springframework.cloud.openfeign.EnableFeignClients
 @org.springframework.cloud.client.discovery.EnableDiscoveryClient
-=======
-@SpringBootApplication
->>>>>>> 77ffb407f46b53391eec3faaae934b5cd5cfee46
 @EnableScheduling
 public class ClubServiceApplication {
 
