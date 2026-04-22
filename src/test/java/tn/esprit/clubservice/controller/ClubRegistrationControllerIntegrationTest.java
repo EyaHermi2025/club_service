@@ -38,7 +38,7 @@ class ClubRegistrationControllerIntegrationTest {
         
         when(registrationService.findAll()).thenReturn(Arrays.asList(dto));
 
-        mockMvc.perform(get("/api/registrations"))
+        mockMvc.perform(get("/api/club-registrations"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].fullName").value("Student"));
     }
@@ -51,7 +51,7 @@ class ClubRegistrationControllerIntegrationTest {
 
         when(registrationService.findById(1L)).thenReturn(Optional.of(dto));
 
-        mockMvc.perform(get("/api/registrations/1"))
+        mockMvc.perform(get("/api/club-registrations/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.fullName").value("Student"));
     }
@@ -64,7 +64,7 @@ class ClubRegistrationControllerIntegrationTest {
 
         when(registrationService.create(any(ClubRegistrationDTO.class))).thenReturn(dto);
 
-        mockMvc.perform(post("/api/registrations")
+        mockMvc.perform(post("/api/club-registrations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"fullName\":\"New Student\", \"email\":\"student@test.com\", \"clubId\":1, \"userId\":123, \"phoneNumber\":\"123\", \"studentId\":\"S1\", \"yearOfStudy\":\"1\"}"))
                 .andExpect(status().isCreated())
@@ -78,7 +78,7 @@ class ClubRegistrationControllerIntegrationTest {
 
         when(registrationService.update(eq(1L), any(ClubRegistrationDTO.class))).thenReturn(dto);
 
-        mockMvc.perform(put("/api/registrations/1")
+        mockMvc.perform(put("/api/club-registrations/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"fullName\":\"Updated Student\"}"))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ class ClubRegistrationControllerIntegrationTest {
 
     @Test
     void testDeleteRegistration() throws Exception {
-        mockMvc.perform(delete("/api/registrations/1"))
+        mockMvc.perform(delete("/api/club-registrations/1"))
                 .andExpect(status().isNoContent());
     }
 
@@ -96,7 +96,7 @@ class ClubRegistrationControllerIntegrationTest {
         ClubRegistrationDTO dto = new ClubRegistrationDTO();
         when(registrationService.findByClubId(1L)).thenReturn(Arrays.asList(dto));
 
-        mockMvc.perform(get("/api/registrations/club/1"))
+        mockMvc.perform(get("/api/club-registrations/club/1"))
                 .andExpect(status().isOk());
     }
 }
