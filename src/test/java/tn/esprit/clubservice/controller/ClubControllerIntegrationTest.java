@@ -15,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import tn.esprit.clubservice.dto.ClubDTO;
+import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.service.ClubService;
 
 @SpringBootTest
@@ -30,15 +30,14 @@ public class ClubControllerIntegrationTest {
 
     @Test
     public void testGetAllClubs() throws Exception {
-        // ✅ ClubDTO à la place de Club
-        ClubDTO clubDTO = new ClubDTO();
-        clubDTO.setId(1L);
-        clubDTO.setName("Test Club");
+        Club club = new Club();
+        club.setId(1L);
+        club.setName("Test Club");
 
-        when(clubService.findAll()).thenReturn(Arrays.asList(clubDTO));
+        when(clubService.findAll()).thenReturn(Arrays.asList(club));
 
         mockMvc.perform(get("/api/clubs")
-                        .contentType(MediaType.APPLICATION_JSON))
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("Test Club"));
     }

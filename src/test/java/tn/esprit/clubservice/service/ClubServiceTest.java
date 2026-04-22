@@ -12,7 +12,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.repository.ClubRepository;
 
@@ -39,8 +38,7 @@ public class ClubServiceTest {
     void testFindById_Found() {
         when(clubRepository.findById(1L)).thenReturn(Optional.of(testClub));
 
-        // ✅ Optional<ClubDTO> à la place de Optional<Club>
-        Optional<ClubDTO> found = clubService.findById(1L);
+        Optional<Club> found = clubService.findById(1L);
 
         assertTrue(found.isPresent());
         assertEquals("Google Developer Student Club", found.get().getName());
