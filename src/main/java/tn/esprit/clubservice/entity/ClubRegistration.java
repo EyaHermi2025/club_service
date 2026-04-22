@@ -5,17 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
-/**
- * Club_Registration (diagram: IdCR, Date_Inscription, Status, User_Id, Club_Id).
- * User is not implemented in this module; userId is stored as reference.
- */
 @Entity
 @Table(name = "club_registration")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClubRegistration {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_cr")
@@ -76,38 +75,13 @@ public class ClubRegistration {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnore
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Club club;
 
-    /**
-     * Transient field to receive Club_Id from JSON without interfering
-     * with the JPA club relationship.
-     */
     @Transient
     @JsonProperty("Club_Id")
     private Long clubIdInput;
-
-    public ClubRegistration() {
-        // Default constructor required by JPA
-    }
-
-    /**
-     * Returns the Club ID — from the club entity if loaded, or from the
-     * transient input field (used during JSON deserialization).
-     */
-    public Long getClubId() {
-        if (this.club != null) {
-            return this.club.getId();
-        }
-        return this.clubIdInput;
-    }
-
-    public Long getClubIdInput() {
-        return clubIdInput;
-    }
-
-    public void setClubIdInput(Long clubIdInput) {
-        this.clubIdInput = clubIdInput;
-    }
 
     @PrePersist
     protected void onCreate() {
@@ -116,84 +90,10 @@ public class ClubRegistration {
         }
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public LocalDateTime getDateInscription() { return dateInscription; }
-    public void setDateInscription(LocalDateTime dateInscription) { this.dateInscription = dateInscription; }
-    public String getFullName() { return fullName; }
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public Club getClub() { return club; }
-    public void setClub(Club club) { this.club = club; }
-    public String getStudentId() { return studentId; }
-    public void setStudentId(String studentId) { this.studentId = studentId; }
-    public String getYearOfStudy() { return yearOfStudy; }
-    public void setYearOfStudy(String yearOfStudy) { this.yearOfStudy = yearOfStudy; }
-    public String getMotivation() { return motivation; }
-    public void setMotivation(String motivation) { this.motivation = motivation; }
-    public String getSkills() { return skills; }
-    public void setSkills(String skills) { this.skills = skills; }
-    public Boolean getTermsAccepted() { return termsAccepted; }
-    public void setTermsAccepted(Boolean termsAccepted) { this.termsAccepted = termsAccepted; }
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    // Builder manual implementation
-    public static ClubRegistrationBuilder builder() {
-        return new ClubRegistrationBuilder();
-    }
-
-    public static class ClubRegistrationBuilder {
-        private Long id;
-        private LocalDateTime dateInscription;
-        private String fullName;
-        private String email;
-        private String phoneNumber;
-        private String studentId;
-        private String yearOfStudy;
-        private String motivation;
-        private String skills;
-        private Boolean termsAccepted;
-        private Long userId;
-        private String status;
-        private Club club;
-
-        public ClubRegistrationBuilder id(Long id) { this.id = id; return this; }
-        public ClubRegistrationBuilder dateInscription(LocalDateTime dateInscription) { this.dateInscription = dateInscription; return this; }
-        public ClubRegistrationBuilder fullName(String fullName) { this.fullName = fullName; return this; }
-        public ClubRegistrationBuilder email(String email) { this.email = email; return this; }
-        public ClubRegistrationBuilder phoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; return this; }
-        public ClubRegistrationBuilder studentId(String studentId) { this.studentId = studentId; return this; }
-        public ClubRegistrationBuilder yearOfStudy(String yearOfStudy) { this.yearOfStudy = yearOfStudy; return this; }
-        public ClubRegistrationBuilder motivation(String motivation) { this.motivation = motivation; return this; }
-        public ClubRegistrationBuilder skills(String skills) { this.skills = skills; return this; }
-        public ClubRegistrationBuilder termsAccepted(Boolean termsAccepted) { this.termsAccepted = termsAccepted; return this; }
-        public ClubRegistrationBuilder userId(Long userId) { this.userId = userId; return this; }
-        public ClubRegistrationBuilder status(String status) { this.status = status; return this; }
-        public ClubRegistrationBuilder club(Club club) { this.club = club; return this; }
-
-        public ClubRegistration build() {
-            ClubRegistration registration = new ClubRegistration();
-            registration.setId(id);
-            registration.setDateInscription(dateInscription);
-            registration.setFullName(fullName);
-            registration.setEmail(email);
-            registration.setPhoneNumber(phoneNumber);
-            registration.setStudentId(studentId);
-            registration.setYearOfStudy(yearOfStudy);
-            registration.setMotivation(motivation);
-            registration.setSkills(skills);
-            registration.setTermsAccepted(termsAccepted);
-            registration.setUserId(userId);
-            registration.setStatus(status);
-            registration.setClub(club);
-            return registration;
+    public Long getClubId() {
+        if (this.club != null) {
+            return this.club.getId();
         }
+        return this.clubIdInput;
     }
 }
-

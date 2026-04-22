@@ -1,5 +1,7 @@
 package tn.esprit.clubservice.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import tn.esprit.clubservice.dto.ClubRegistrationDTO;
@@ -28,34 +31,72 @@ class ClubRegistrationControllerIntegrationTest {
     private ClubRegistrationService registrationService;
 
     @Test
-    void testGetAll() throws Exception {
-        ClubRegistrationDTO reg = new ClubRegistrationDTO();
-        reg.setId(1L);
-        reg.setFullName("Test User");
+    void testGetAllRegistrations() throws Exception {
+        ClubRegistrationDTO dto = new ClubRegistrationDTO();
+        dto.setId(1L);
+        dto.setFullName("Student");
+        
+        when(registrationService.findAll()).thenReturn(Arrays.asList(dto));
 
-        when(registrationService.findAll()).thenReturn(Arrays.asList(reg));
-
-        mockMvc.perform(get("/api/club-registrations"))
+        mockMvc.perform(get("/api/registrations"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].fullName").value("Test User"));
+                .andExpect(jsonPath("$[0].fullName").value("Student"));
     }
 
     @Test
-    void testGetById() throws Exception {
-        ClubRegistrationDTO reg = new ClubRegistrationDTO();
-        reg.setId(1L);
-        reg.setFullName("Specific User");
+    void testGetRegistrationById() throws Exception {
+        ClubRegistrationDTO dto = new ClubRegistrationDTO();
+        dto.setId(1L);
+        dto.setFullName("Student");
 
-        when(registrationService.findById(1L)).thenReturn(Optional.of(reg));
+        when(registrationService.findById(1L)).thenReturn(Optional.of(dto));
 
-        mockMvc.perform(get("/api/club-registrations/1"))
+        mockMvc.perform(get("/api/registrations/1"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.fullName").value("Specific User"));
+                .andExpect(jsonPath("$.fullName").value("Student"));
     }
 
     @Test
-    void testDelete() throws Exception {
-        mockMvc.perform(delete("/api/club-registrations/1"))
+    void testCreateRegistration() throws Exception {
+        ClubRegistrationDTO dto = new ClubRegistrationDTO();
+        dto.setId(1L);
+        dto.setFullName("New Student");
+
+        when(registrationService.create(any(ClubRegistrationDTO.class))).thenReturn(dto);
+
+        mockMvc.perform(post("/api/registrations")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"fullName\":\"New Student\", \"email\":\"student@test.com\", \"clubId\":1, \"userId\":123, \"phoneNumber\":\"123\", \"studentId\":\"S1\", \"yearOfStudy\":\"1\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.fullName").value("New Student"));
+    }
+
+    @Test
+    void testUpdateRegistration() throws Exception {
+        ClubRegistrationDTO dto = new ClubRegistrationDTO();
+        dto.setFullName("Updated Student");
+
+        when(registrationService.update(eq(1L), any(ClubRegistrationDTO.class))).thenReturn(dto);
+
+        mockMvc.perform(put("/api/registrations/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"fullName\":\"Updated Student\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fullName").value("Updated Student"));
+    }
+
+    @Test
+    void testDeleteRegistration() throws Exception {
+        mockMvc.perform(delete("/api/registrations/1"))
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void testGetByClubId() throws Exception {
+        ClubRegistrationDTO dto = new ClubRegistrationDTO();
+        when(registrationService.findByClubId(1L)).thenReturn(Arrays.asList(dto));
+
+        mockMvc.perform(get("/api/registrations/club/1"))
+                .andExpect(status().isOk());
     }
 }
