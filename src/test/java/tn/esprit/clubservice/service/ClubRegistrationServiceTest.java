@@ -46,7 +46,7 @@ public class ClubRegistrationServiceTest {
 
         testRegistration = new ClubRegistration();
         testRegistration.setId(1L);
-        testRegistration.setClubId(1L);
+        testRegistration.setClubIdInput(1L);
         testRegistration.setEmail("student@mail.com");
         testRegistration.setFullName("John Doe");
     }
@@ -83,7 +83,7 @@ public class ClubRegistrationServiceTest {
 
     @Test
     void testCreate_MissingClubId() {
-        testRegistration.setClubId(null);
+        testRegistration.setClubIdInput(null);
         assertThrows(RuntimeException.class, () -> {
             registrationService.create(testRegistration);
         });
