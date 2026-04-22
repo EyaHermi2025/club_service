@@ -1,3 +1,7 @@
+package tn.esprit.clubservice.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.entity.ClubRegistration;
 import tn.esprit.clubservice.dto.ClubRegistrationDTO;
