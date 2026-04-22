@@ -44,6 +44,6 @@ class PopularityWebSocketHandlerTest {
         handler.afterConnectionEstablished(session);
         handler.broadcast("Message");
         
-        // Internal sessions should be cleaned up or at least handled
+        verify(session, times(1)).sendMessage(any(TextMessage.class));
     }
 }

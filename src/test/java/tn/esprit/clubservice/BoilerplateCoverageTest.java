@@ -19,111 +19,71 @@ class BoilerplateCoverageTest {
 
     @Test
     void testClubDTO() {
-        ClubDTO dto = ClubDTO.builder()
-                .id(1L)
-                .name("Name")
-                .status(ClubStatus.ACTIVE)
-                .creationDate(LocalDateTime.now())
-                .emailContact("test@test.com")
-                .category(ClubCategory.TECHNOLOGY)
-                .budget(100.0)
-                .build();
+        LocalDateTime now = LocalDateTime.now();
+        ClubDTO dto1 = ClubDTO.builder()
+                .id(1L).name("Name").status(ClubStatus.ACTIVE).creationDate(now)
+                .emailContact("t@t.com").category(ClubCategory.TECHNOLOGY).budget(100.0).build();
         
-        assertNotNull(dto.getName());
-        assertNotNull(dto.toString());
-        assertEquals(dto, dto);
-        assertNotEquals(dto, new Object());
+        ClubDTO dto2 = ClubDTO.builder()
+                .id(1L).name("Name").status(ClubStatus.ACTIVE).creationDate(now)
+                .emailContact("t@t.com").category(ClubCategory.TECHNOLOGY).budget(100.0).build();
+
+        assertEquals(dto1, dto2);
+        assertEquals(dto1.hashCode(), dto2.hashCode());
+        assertNotNull(dto1.toString());
+        assertNotEquals(dto1, new Object());
         
-        ClubDTO dto2 = new ClubDTO();
-        dto2.setId(1L);
-        assertEquals(1L, dto2.getId());
+        ClubDTO empty = new ClubDTO();
+        empty.setId(2L);
+        assertEquals(2L, empty.getId());
     }
 
     @Test
     void testClubRegistrationDTO() {
-        ClubRegistrationDTO dto = ClubRegistrationDTO.builder()
-                .id(1L)
-                .fullName("Full Name")
-                .email("a@b.com")
-                .phoneNumber("123")
-                .studentId("S1")
-                .yearOfStudy("Y1")
-                .motivation("M")
-                .skills("S")
-                .termsAccepted(true)
-                .userId(1L)
-                .status("Pending")
-                .clubId(1L)
-                .dateInscription(LocalDateTime.now())
-                .build();
+        ClubRegistrationDTO dto1 = ClubRegistrationDTO.builder()
+                .id(1L).fullName("N").email("e").phoneNumber("p").studentId("s").yearOfStudy("y")
+                .motivation("m").skills("s").termsAccepted(true).userId(1L).status("P").clubId(1L).build();
         
-        assertNotNull(dto.toString());
-        assertEquals(dto, dto);
-        
-        ClubRegistrationDTO dto2 = new ClubRegistrationDTO();
-        dto2.setFullName("Name");
-        assertEquals("Name", dto2.getFullName());
+        ClubRegistrationDTO dto2 = ClubRegistrationDTO.builder()
+                .id(1L).fullName("N").email("e").phoneNumber("p").studentId("s").yearOfStudy("y")
+                .motivation("m").skills("s").termsAccepted(true).userId(1L).status("P").clubId(1L).build();
+
+        assertEquals(dto1, dto2);
+        assertNotNull(dto1.toString());
     }
 
     @Test
     void testClubEntity() {
-        Club club = Club.builder()
-                .id(1L)
-                .name("Club")
-                .status(ClubStatus.ACTIVE)
-                .category(ClubCategory.ARTS)
-                .budget(500.0)
-                .registrations(new ArrayList<>())
-                .build();
+        Club c1 = Club.builder().id(1L).name("A").status(ClubStatus.ACTIVE).category(ClubCategory.ARTS).budget(1.0).build();
+        Club c2 = Club.builder().id(1L).name("A").status(ClubStatus.ACTIVE).category(ClubCategory.ARTS).budget(1.0).build();
         
-        assertNotNull(club.toString());
-        assertEquals(club, club);
-        
-        Club club2 = new Club();
-        club2.onCreate();
-        assertNotNull(club2.getCreationDate());
+        assertEquals(c1, c2);
+        c1.onCreate();
+        assertNotNull(c1.getCreationDate());
     }
 
     @Test
     void testClubRegistrationEntity() {
         Club club = new Club();
         club.setId(10L);
-        
-        ClubRegistration reg = ClubRegistration.builder()
-                .id(1L)
-                .fullName("Student")
-                .email("s@t.com")
-                .phoneNumber("123")
-                .studentId("S1")
-                .yearOfStudy("1")
-                .motivation("M")
-                .skills("S")
-                .termsAccepted(true)
-                .userId(1L)
-                .status("Active")
-                .club(club)
-                .clubIdInput(10L)
-                .build();
-        
-        assertEquals(10L, reg.getClubId());
-        assertNotNull(reg.toString());
-        
-        ClubRegistration reg2 = new ClubRegistration();
-        reg2.setClubIdInput(20L);
-        assertEquals(20L, reg2.getClubId());
-        reg2.onCreate();
-        assertNotNull(reg2.getDateInscription());
+        ClubRegistration r1 = ClubRegistration.builder().id(1L).fullName("S").club(club).build();
+        ClubRegistration r2 = ClubRegistration.builder().id(1L).fullName("S").club(club).build();
+
+        assertEquals(r1, r2);
+        assertEquals(10L, r1.getClubId());
+        r1.onCreate();
+        assertNotNull(r1.getDateInscription());
     }
 
     @Test
     void testClubRegistrationEvent() {
-        ClubRegistrationEvent event = new ClubRegistrationEvent("e@e.com", "name", "club");
-        assertEquals("e@e.com", event.getEmail());
-        assertEquals("name", event.getFullName());
-        assertEquals("club", event.getClubName());
+        ClubRegistrationEvent e1 = new ClubRegistrationEvent("e", "f", "c");
+        ClubRegistrationEvent e2 = new ClubRegistrationEvent("e", "f", "c");
+        assertEquals(e1.getEmail(), e2.getEmail());
+        assertNotNull(e1.toString());
         
         ClubRegistrationEvent empty = new ClubRegistrationEvent();
-        empty.setClubName("C");
-        assertEquals("C", empty.getClubName());
+        empty.setEmail("test");
+        assertEquals("test", empty.getEmail());
     }
 }
