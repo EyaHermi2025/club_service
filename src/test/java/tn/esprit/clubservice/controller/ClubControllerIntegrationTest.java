@@ -19,7 +19,7 @@ import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.service.ClubService;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 class ClubControllerIntegrationTest {
 
     @Autowired

@@ -23,7 +23,7 @@ class GlobalExceptionHandlerTest {
         ResourceNotFoundException ex = new ResourceNotFoundException("Resource", 1L);
         ResponseEntity<Map<String, String>> response = handler.handleResourceNotFound(ex);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Resource not found with id : '1'", response.getBody().get("message"));
+        assertEquals("Resource not found with id: 1", response.getBody().get("message"));
     }
 
     @Test
