@@ -2,12 +2,14 @@ package tn.esprit.clubservice.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tn.esprit.clubservice.dto.ClubDTO;
 import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.exception.ResourceNotFoundException;
 import tn.esprit.clubservice.repository.ClubRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClubService {
@@ -18,31 +20,57 @@ public class ClubService {
         this.clubRepository = clubRepository;
     }
 
-    @Transactional(readOnly = true)
-    public List<Club> findAll() {
-        return clubRepository.findAll();
+    // ✅ Conversion Club -> ClubDTO
+    private ClubDTO toDTO(Club club) {
+        ClubDTO dto = new ClubDTO();
+        dto.setId(club.getId());
+        dto.setName(club.getName());
+        dto.setStatus(club.getStatus());
+        dto.setCategory(club.getCategory());
+        dto.setEmailContact(club.getEmailContact());
+        dto.setBudget(club.getBudget());
+        dto.setCreationDate(club.getCreationDate());
+        return dto;
+    }
+
+    // ✅ Conversion ClubDTO -> Club
+    private Club toEntity(ClubDTO dto) {
+        Club club = new Club();
+        club.setName(dto.getName());
+        club.setStatus(dto.getStatus());
+        club.setCategory(dto.getCategory());
+        club.setEmailContact(dto.getEmailContact());
+        club.setBudget(dto.getBudget());
+        club.setCreationDate(dto.getCreationDate());
+        return club;
     }
 
     @Transactional(readOnly = true)
-    public Optional<Club> findById(Long id) {
-        return clubRepository.findById(id);
+    public List<ClubDTO> findAll() {
+        return clubRepository.findAll().stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<ClubDTO> findById(Long id) {
+        return clubRepository.findById(id).map(this::toDTO);
     }
 
     @Transactional
-    public Club create(Club club) {
-        return clubRepository.save(club);
+    public ClubDTO create(ClubDTO clubDTO) {
+        Club club = toEntity(clubDTO);
+        return toDTO(clubRepository.save(club));
     }
 
     @Transactional
-    public Club update(Long id, Club clubDetails) {
+    public ClubDTO update(Long id, ClubDTO clubDTO) {
         Club club = clubRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Club", id));
-        club.setName(clubDetails.getName());
-        club.setStatus(clubDetails.getStatus());
-        club.setCategory(clubDetails.getCategory());
-        club.setEmailContact(clubDetails.getEmailContact());
-        club.setBudget(clubDetails.getBudget());
-        return clubRepository.save(club);
+        club.setName(clubDTO.getName());
+        club.setStatus(clubDTO.getStatus());
+        club.setCategory(clubDTO.getCategory());
+        club.setEmailContact(clubDTO.getEmailContact());
+        club.setBudget(clubDTO.getBudget());
+        return toDTO(clubRepository.save(club));
     }
 
     @Transactional
@@ -65,17 +93,17 @@ public class ClubService {
     }
 
     @Transactional(readOnly = true)
-    public List<Club> findByStatus(Club.ClubStatus status) {
-        return clubRepository.findByStatus(status);
+    public List<ClubDTO> findByStatus(Club.ClubStatus status) {
+        return clubRepository.findByStatus(status).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Club> findByCategory(Club.ClubCategory category) {
-        return clubRepository.findByCategory(category);
+    public List<ClubDTO> findByCategory(Club.ClubCategory category) {
+        return clubRepository.findByCategory(category).stream().map(this::toDTO).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Club> searchByName(String name) {
-        return clubRepository.findByNameContainingIgnoreCase(name);
+    public List<ClubDTO> searchByName(String name) {
+        return clubRepository.findByNameContainingIgnoreCase(name).stream().map(this::toDTO).collect(Collectors.toList());
     }
 }

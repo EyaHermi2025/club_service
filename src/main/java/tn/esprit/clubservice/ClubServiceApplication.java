@@ -1,10 +1,10 @@
 package tn.esprit.clubservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import org.springframework.scheduling.annotation.EnableScheduling;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.boot.CommandLineRunner;
 import tn.esprit.clubservice.repository.ClubRepository;
@@ -18,6 +18,9 @@ import java.time.LocalDateTime;
 @org.springframework.cloud.client.discovery.EnableDiscoveryClient
 @EnableScheduling
 public class ClubServiceApplication {
+
+    // ✅ Logger ici au niveau de la classe
+    private static final Logger logger = LoggerFactory.getLogger(ClubServiceApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(ClubServiceApplication.class, args);
@@ -58,7 +61,7 @@ public class ClubServiceApplication {
                 clubRepository.save(club2);
                 clubRepository.save(club3);
 
-                System.out.println("✅ Mock clubs inserted into database successfully!");
+                logger.info("✅ Mock clubs inserted into database successfully!");
             }
         };
     }
