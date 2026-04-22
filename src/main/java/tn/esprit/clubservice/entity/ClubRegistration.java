@@ -70,6 +70,10 @@ public class ClubRegistration {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    @JsonProperty("Status")
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id", nullable = false)
     @JsonIgnore
@@ -151,6 +155,8 @@ public class ClubRegistration {
     public void setSkills(String skills) { this.skills = skills; }
     public Boolean getTermsAccepted() { return termsAccepted; }
     public void setTermsAccepted(Boolean termsAccepted) { this.termsAccepted = termsAccepted; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     // Builder manual implementation
     public static ClubRegistrationBuilder builder() {
@@ -169,6 +175,7 @@ public class ClubRegistration {
         private String skills;
         private Boolean termsAccepted;
         private Long userId;
+        private String status;
         private Club club;
 
         public ClubRegistrationBuilder id(Long id) { this.id = id; return this; }
@@ -182,10 +189,13 @@ public class ClubRegistration {
         public ClubRegistrationBuilder skills(String skills) { this.skills = skills; return this; }
         public ClubRegistrationBuilder termsAccepted(Boolean termsAccepted) { this.termsAccepted = termsAccepted; return this; }
         public ClubRegistrationBuilder userId(Long userId) { this.userId = userId; return this; }
+        public ClubRegistrationBuilder status(String status) { this.status = status; return this; }
         public ClubRegistrationBuilder club(Club club) { this.club = club; return this; }
 
         public ClubRegistration build() {
-            return new ClubRegistration(id, dateInscription, fullName, email, phoneNumber, studentId, yearOfStudy, motivation, skills, termsAccepted, userId, club);
+            ClubRegistration registration = new ClubRegistration(id, dateInscription, fullName, email, phoneNumber, studentId, yearOfStudy, motivation, skills, termsAccepted, userId, club);
+            registration.setStatus(status);
+            return registration;
         }
     }
 }

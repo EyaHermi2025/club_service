@@ -44,9 +44,12 @@ public class ClubRegistrationService {
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new ResourceNotFoundException("Club", clubId));
         registration.setClub(club);
+        if (registration.getStatus() == null) {
+            registration.setStatus("Pending");
+        }
         ClubRegistration saved = registrationRepository.save(registration);
 
-        // Send Kafka event
+
         ClubRegistrationEvent event = new ClubRegistrationEvent(
                 saved.getEmail(),
                 saved.getFullName(),

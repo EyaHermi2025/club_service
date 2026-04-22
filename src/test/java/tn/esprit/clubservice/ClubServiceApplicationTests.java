@@ -1,9 +1,9 @@
-package src.test.java.tn.esprit.clubservice;
+package tn.esprit.clubservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = ClubServiceApplication.class)
 class ClubServiceApplicationTests {
 
     @Test
