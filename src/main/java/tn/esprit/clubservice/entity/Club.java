@@ -69,7 +69,7 @@ public class Club {
     private List<ClubRegistration> registrations = new ArrayList<>();
 
     @PrePersist
-    protected void onCreate() {
+    public void onCreate() {
         if (creationDate == null) {
             creationDate = LocalDateTime.now();
         }

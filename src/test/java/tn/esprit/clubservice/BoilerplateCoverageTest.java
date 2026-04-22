@@ -118,8 +118,8 @@ class BoilerplateCoverageTest {
     @Test
     void testClubRegistrationEvent() {
         ClubRegistrationEvent event = new ClubRegistrationEvent("e@e.com", "name", "club");
-        assertEquals("e@e.com", event.getRecipientEmail());
-        assertEquals("name", event.getStudentName());
+        assertEquals("e@e.com", event.getEmail());
+        assertEquals("name", event.getFullName());
         assertEquals("club", event.getClubName());
         
         ClubRegistrationEvent empty = new ClubRegistrationEvent();

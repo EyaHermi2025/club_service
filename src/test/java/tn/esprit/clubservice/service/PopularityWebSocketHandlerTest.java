@@ -19,7 +19,7 @@ class PopularityWebSocketHandlerTest {
     }
 
     @Test
-    void testBroadcast() throws IOException {
+    void testBroadcast() throws Exception {
         WebSocketSession session1 = mock(WebSocketSession.class);
         WebSocketSession session2 = mock(WebSocketSession.class);
         
@@ -36,7 +36,7 @@ class PopularityWebSocketHandlerTest {
     }
 
     @Test
-    void testCleanupOnBroadcastFailure() throws IOException {
+    void testCleanupOnBroadcastFailure() throws Exception {
         WebSocketSession session = mock(WebSocketSession.class);
         when(session.isOpen()).thenReturn(true);
         doThrow(new IOException()).when(session).sendMessage(any(TextMessage.class));

@@ -84,7 +84,7 @@ public class ClubRegistration {
     private Long clubIdInput;
 
     @PrePersist
-    protected void onCreate() {
+    public void onCreate() {
         if (dateInscription == null) {
             dateInscription = LocalDateTime.now();
         }
