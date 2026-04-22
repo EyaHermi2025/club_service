@@ -16,7 +16,7 @@ import tn.esprit.clubservice.service.PopularityJobService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class PopularityControllerTest {
+class PopularityControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -25,7 +25,7 @@ public class PopularityControllerTest {
     private PopularityJobService popularityJobService;
 
     @Test
-    public void testGetTopClub() throws Exception {
+    void testGetTopClub() throws Exception {
         when(popularityJobService.getMostPopularClub()).thenReturn("Popular Club (5 registrations)");
 
         mockMvc.perform(get("/api/clubs/popularity/top"))

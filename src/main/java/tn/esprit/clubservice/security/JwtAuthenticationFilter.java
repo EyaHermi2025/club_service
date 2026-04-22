@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    private static final Logger filterLogger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final JwtUtils jwtUtils;
 
@@ -54,9 +54,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     return null;
                 });
 
-                logger.debug("=== CLUB SECURITY DEBUG ===");
-                logger.debug("User: {}", userEmail);
-                logger.debug("Extracted Role Claim: {}", roleClaim);
+                filterLogger.debug("=== CLUB SECURITY DEBUG ===");
+                filterLogger.debug("User: {}", userEmail);
+                filterLogger.debug("Extracted Role Claim: {}", roleClaim);
 
                 if (roleClaim != null) {
                     if (roleClaim instanceof String) {
@@ -72,8 +72,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 
-                logger.debug("Final Authorities: {}", authorities);
-                logger.debug("======================");
+                filterLogger.debug("Final Authorities: {}", authorities);
+                filterLogger.debug("======================");
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userEmail, null, authorities);

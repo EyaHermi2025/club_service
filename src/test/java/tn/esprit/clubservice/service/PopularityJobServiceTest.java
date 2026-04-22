@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.clubservice.repository.ClubRegistrationRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class PopularityJobServiceTest {
+class PopularityJobServiceTest {
 
     @Mock
     private ClubRegistrationRepository registrationRepository;

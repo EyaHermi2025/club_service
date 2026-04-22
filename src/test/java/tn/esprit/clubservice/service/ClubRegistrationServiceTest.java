@@ -21,7 +21,7 @@ import tn.esprit.clubservice.repository.ClubRepository;
 import tn.esprit.clubservice.dto.ClubRegistrationEvent;
 
 @ExtendWith(MockitoExtension.class)
-public class ClubRegistrationServiceTest {
+class ClubRegistrationServiceTest {
 
     @Mock
     private ClubRegistrationRepository registrationRepository;

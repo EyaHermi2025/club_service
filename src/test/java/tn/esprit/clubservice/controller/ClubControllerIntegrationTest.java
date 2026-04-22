@@ -20,7 +20,7 @@ import tn.esprit.clubservice.service.ClubService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ClubControllerIntegrationTest {
+class ClubControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -29,7 +29,7 @@ public class ClubControllerIntegrationTest {
     private ClubService clubService;
 
     @Test
-    public void testGetAllClubs() throws Exception {
+    void testGetAllClubs() throws Exception {
         Club club = new Club();
         club.setId(1L);
         club.setName("Test Club");
@@ -43,7 +43,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testGetClubById() throws Exception {
+    void testGetClubById() throws Exception {
         Club club = new Club();
         club.setId(1L);
         club.setName("Specific Club");
@@ -57,7 +57,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testCreateClub() throws Exception {
+    void testCreateClub() throws Exception {
         Club club = new Club();
         club.setId(1L);
         club.setName("Test Club");
@@ -72,7 +72,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testUpdateClub() throws Exception {
+    void testUpdateClub() throws Exception {
         Club club = new Club();
         club.setName("Updated Club");
 
@@ -86,7 +86,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testGetClubsByStatus() throws Exception {
+    void testGetClubsByStatus() throws Exception {
         Club club = new Club();
         club.setName("Active Club");
 
@@ -99,7 +99,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testGetClubsByCategory() throws Exception {
+    void testGetClubsByCategory() throws Exception {
         Club club = new Club();
         club.setName("Tech Club");
 
@@ -112,7 +112,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testSearchByName() throws Exception {
+    void testSearchByName() throws Exception {
         Club club = new Club();
         club.setName("Search Club");
 
@@ -125,7 +125,7 @@ public class ClubControllerIntegrationTest {
     }
 
     @Test
-    public void testDeductBudget() throws Exception {
+    void testDeductBudget() throws Exception {
         org.mockito.Mockito.doNothing().when(clubService).deductBudget(org.mockito.ArgumentMatchers.eq(1L), org.mockito.ArgumentMatchers.anyDouble());
 
         mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/clubs/1/deduct-budget?amount=50.0"))

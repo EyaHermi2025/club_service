@@ -16,7 +16,7 @@ import tn.esprit.clubservice.entity.Club;
 import tn.esprit.clubservice.repository.ClubRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ClubServiceTest {
+class ClubServiceTest {
 
     @Mock
     private ClubRepository clubRepository;
