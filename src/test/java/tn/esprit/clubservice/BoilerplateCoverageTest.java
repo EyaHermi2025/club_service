@@ -7,7 +7,6 @@ import tn.esprit.clubservice.entity.Club.ClubCategory;
 import tn.esprit.clubservice.entity.Club.ClubStatus;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
