@@ -9,7 +9,7 @@ pipeline {
         DOCKER_HUB_USER = 'eyahermi2025'
         IMAGE_NAME = 'club-service'
         PROJECT_KEY = 'EyaHermi2025_club_service'
-        ORG_KEY = 'eyahermi2025'
+        DB_URL = 'jdbc:mysql://host.docker.internal:3306/club_service_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true'
     }
 
     stages {
@@ -21,7 +21,8 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh 'mvn clean verify'
+                // Utilisation de host.docker.internal pour atteindre MySQL sur ton PC Windows
+                sh "mvn clean verify -Dspring.datasource.url=${DB_URL}"
             }
         }
 
