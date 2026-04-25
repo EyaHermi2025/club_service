@@ -21,7 +21,8 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                sh "mvn clean verify '-Dspring.datasource.url=${DB_URL}'"
+                // On désactive Eureka pendant les tests pour éviter les erreurs de connexion inutiles
+                sh "mvn clean verify '-Dspring.datasource.url=${DB_URL}' -Deureka.client.enabled=false"
             }
         }
 
