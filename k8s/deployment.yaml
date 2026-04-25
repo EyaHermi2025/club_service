@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: club-service
+  namespace: school-platform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: club-service
+  template:
+    metadata:
+      labels:
+        app: club-service
+    spec:
+      containers:
+      - name: club-service
+        image: ${DOCKER_HUB_USER}/club-service:latest
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: club-service
+  namespace: school-platform
+spec:
+  selector:
+    app: club-service
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+  type: ClusterIP
