@@ -25,6 +25,13 @@ spec:
           value: "http://host.docker.internal:8761/eureka/"
         - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
           value: "host.docker.internal:9092"
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
 ---
 apiVersion: v1
 kind: Service
