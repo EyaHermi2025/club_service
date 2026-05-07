@@ -26,6 +26,7 @@ public class SecurityConfig {
                         // Accès total pour les clubs (Correction 403 radicale)
                         .requestMatchers("/api/clubs/**").permitAll()
                         .requestMatchers("/api/club-registrations/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
